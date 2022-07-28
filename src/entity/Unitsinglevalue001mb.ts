@@ -2,7 +2,8 @@ import { UnitSingleValueDTO } from "src/dto/Unitsinglevalue.dto";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Assay001wb } from "./Assay001wb";
 
-@Entity("unitsinglevalue001mb", { schema: "saturo" })
+@Entity("unitsinglevalue001mb", { schema: "newsaturo" })
+
 export class Unitsinglevalue001mb {
   @PrimaryGeneratedColumn({ type: "int", name: "Id" })
   id: number;

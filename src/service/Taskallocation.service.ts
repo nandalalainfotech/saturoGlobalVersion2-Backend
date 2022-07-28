@@ -6,6 +6,17 @@ import { User001mb } from "src/entity/User001mb";
 import { Repository, Between } from "typeorm";
 import { Response } from "express";
 import { Request } from "supertest";
+import { Ligandtype001mb } from "src/entity/Ligandtype001mb";
+import { Assaytype001mb } from "src/entity/Assaytype001mb";
+import { Toxicity001mb } from "src/entity/Toxicity001mb";
+import { Routeofadministration001mb } from "src/entity/Routeofadministration001mb";
+import { Originalprefix001mb } from "src/entity/Originalprefix001mb";
+import { Category001mb } from "src/entity/Category001mb";
+import { Categoryfunction001mb } from "src/entity/Categoryfunction001mb";
+import { Unitsinglevalue001mb } from "src/entity/Unitsinglevalue001mb";
+import { Assay001wb } from "src/entity/Assay001wb";
+import { Ligand001wb } from "src/entity/Ligand001wb";
+import { Ligandversion001mb } from "src/entity/Ligandversion001mb";
 
 const Excel = require('exceljs');
 const reader = require('xlsx');
@@ -17,7 +28,18 @@ export class TaskallocationService {
 
     constructor(
         @InjectRepository(User001mb) private readonly userRepository: Repository<User001mb>,
-        @InjectRepository(Taskallocation001wb) private readonly taskAllocateRepository: Repository<Taskallocation001wb>) {
+        @InjectRepository(Taskallocation001wb) private readonly taskAllocateRepository: Repository<Taskallocation001wb>,
+        @InjectRepository(Ligandtype001mb) private readonly ligandtypeRepository: Repository<Ligandtype001mb>,
+        @InjectRepository(Assaytype001mb) private readonly assaytypeRepository: Repository<Assaytype001mb>,
+        @InjectRepository(Toxicity001mb) private readonly toxicityRepository: Repository<Toxicity001mb>,
+        @InjectRepository(Routeofadministration001mb) private readonly routeofadministration: Repository<Routeofadministration001mb>,
+        @InjectRepository(Originalprefix001mb) private readonly originalprefixRepository: Repository<Originalprefix001mb>,
+        @InjectRepository(Category001mb) private readonly categoryRepository: Repository<Category001mb>,
+        @InjectRepository(Categoryfunction001mb) private readonly categoryFunctionRepository: Repository<Categoryfunction001mb>,
+        @InjectRepository(Unitsinglevalue001mb) private readonly unitsinglevalueRepository: Repository<Unitsinglevalue001mb>,
+        @InjectRepository(Ligand001wb) private readonly ligandRepository: Repository<Ligand001wb>,
+        @InjectRepository(Assay001wb) private readonly assayRepository: Repository<Assay001wb>,
+        @InjectRepository(Ligandversion001mb) private readonly ligandversionRepository: Repository<Ligandversion001mb>) {
 
     }
     async create(file: any, taskallocationDTO: TaskallocationDTO): Promise<Taskallocation001wb[]> {
@@ -65,6 +87,169 @@ export class TaskallocationService {
 
 
 
+    // async uploadMasterData(file: any, taskallocationDTO: TaskallocationDTO): Promise<any[]> {
+       
+    //     await fs.promises.writeFile('./uploadMasterData/data.xlsx', file.buffer, function (err: any) {
+    //         if (err) return console.log(err);
+    //     });
+    //     return this.masterData();
+    // }
+
+    // async masterData(): Promise<any> {
+    //     const file2 = await reader.readFile("./uploadMasterData/data.xlsx", { cellDates: true });
+    //     const sheet1 = reader.utils.sheet_to_json(file2.Sheets[file2.SheetNames[0]]);
+
+    //     let sheet = JSON.parse(JSON.stringify(sheet1).replace(/\s(?=\w+":)/g, ""));
+    //     // console.log("sheet--->>", sheet);
+
+
+    //     // this.ligandtypeRepository.clear();
+
+    //     // ----------------------Ligandtype----------------
+
+    //     for (let i = 0; i < sheet.length; i++) {
+
+    //         if ((sheet[i].Ligandtype != undefined)) {
+    //             const ligandtype001mb = new Ligandtype001mb();
+    //             ligandtype001mb.ligandtype = sheet[i].Ligandtype;
+    //             ligandtype001mb.insertDatetime = new Date();
+    //             ligandtype001mb.updatedDatetime = new Date();
+    //             ligandtype001mb.insertUser = "upload";
+    //             // this.ligandtypeRepository.save(ligandtype001mb);
+
+    //         }
+    //         else {
+    //         }
+
+    //     }
+
+    //     // ----------------------Assaytype----------------
+
+    //     for (let i = 0; i < sheet.length; i++) {
+
+    //         if ((sheet[i].Assaytype != undefined)) {
+    //             const assaytype001mb = new Assaytype001mb();
+    //             assaytype001mb.assayType = sheet[i].Assaytype;
+    //             assaytype001mb.insertDatetime = new Date();
+    //             assaytype001mb.updatedDatetime = new Date();
+    //             assaytype001mb.insertUser = "upload";
+    //             // this.assaytypeRepository.save(assaytype001mb);
+    //         }
+
+    //         else {
+    //         }
+    //     }
+
+
+    //     // ----------------------Assaytype----------------
+
+    //     for (let i = 0; i < sheet.length; i++) {
+
+    //         if ((sheet[i].Toxicitytype != undefined)) {
+    //             const toxicity001mb = new Toxicity001mb();
+    //             toxicity001mb.toxiCity = sheet[i].Toxicitytype;
+    //             toxicity001mb.insertDatetime = new Date();
+    //             toxicity001mb.updatedDatetime = new Date();
+    //             toxicity001mb.insertUser = "upload";
+    //             // this.toxicityRepository.save(toxicity001mb);
+    //         }
+
+    //         else {
+    //         }
+    //     }
+
+    //     // ----------------------RouteOfAdmin----------------
+
+    //     for (let i = 0; i < sheet.length; i++) {
+
+    //         if ((sheet[i].RouteOfAdmin != undefined)) {
+    //             const routeofadministration001mb = new Routeofadministration001mb();
+    //             routeofadministration001mb.route = sheet[i].RouteOfAdmin;
+    //             routeofadministration001mb.insertDatetime = new Date();
+    //             routeofadministration001mb.updatedDatetime = new Date();
+    //             routeofadministration001mb.insertUser = "upload";
+    //             // this.routeofadministration.save(routeofadministration001mb);
+    //         }
+
+    //         else {
+    //         }
+    //     }
+
+    //     // ----------------------Unitupdated----------------
+
+    //     for (let i = 0; i < sheet.length; i++) {
+
+    //         if ((sheet[i].Unitupdated != undefined)) {
+    //             const unitsinglevalue001mb = new Unitsinglevalue001mb();
+    //             unitsinglevalue001mb.unit = sheet[i].Unitupdated;
+    //             unitsinglevalue001mb.insertDatetime = new Date();
+    //             unitsinglevalue001mb.updatedDatetime = new Date();
+    //             unitsinglevalue001mb.insertUser = "upload";
+    //             // this.unitsinglevalueRepository.save(unitsinglevalue001mb);
+    //         }
+
+    //         else {
+    //         }
+    //     }
+
+    //     // ---------------------- OriginalPrefix----------------
+
+    //     for (let i = 0; i < sheet.length; i++) {
+
+    //         if ((sheet[i].OriginalPrefix != undefined)) {
+    //             const originalprefix001mb = new Originalprefix001mb();
+    //             originalprefix001mb.originalPrefix = sheet[i].OriginalPrefix;
+    //             originalprefix001mb.insertDatetime = new Date();
+    //             originalprefix001mb.updatedDatetime = new Date();
+    //             originalprefix001mb.insertUser = "upload";
+    //             // this.originalprefixRepository.save(originalprefix001mb);
+    //         }
+
+    //         else {
+    //         }
+    //     }
+
+    //     // ---------------------- Category----------------
+
+    //     for (let i = 0; i < sheet.length; i++) {
+
+    //         if ((sheet[i].Category != undefined)) {
+    //             const category001mb = new Category001mb();
+    //             category001mb.category = sheet[i].Category;
+    //             category001mb.insertDatetime = new Date();
+    //             category001mb.updatedDatetime = new Date();
+    //             category001mb.insertUser = "upload";
+    //             // this.categoryRepository.save(category001mb);
+    //         }
+
+    //         else {
+    //         }
+    //     }
+
+    //     // ---------------------- CategoryFunction----------------
+
+    //     for (let i = 0; i < sheet.length; i++) {
+
+    //         if ((sheet[i].CategoryFunction != undefined)) {
+    //             const categoryfunction001mb = new Categoryfunction001mb();
+    //             categoryfunction001mb.function = sheet[i].CategoryFunction;
+    //             categoryfunction001mb.insertDatetime = new Date();
+    //             categoryfunction001mb.updatedDatetime = new Date();
+    //             categoryfunction001mb.insertUser = "upload";
+    //             // this.categoryFunctionRepository.save(categoryfunction001mb);
+    //         }
+
+    //         else {
+    //         }
+    //     }
+
+    //     // let ligandtype = await this.ligandtypeRepository.find();
+    //     // console.log("ligandtype---->>", ligandtype);
+    //     // return ligandtype;
+    // }
+
+
+
     async update(taskallocationDTO: TaskallocationDTO): Promise<Taskallocation001wb> {
         const taskallocation001wb = new Taskallocation001wb();
         taskallocation001wb.setProperties(taskallocationDTO);
@@ -89,23 +274,23 @@ export class TaskallocationService {
     }
 
     async findByCuratorStartEndDate(username: any, startDate: any, endDate: any): Promise<Taskallocation001wb[]> {
-            let sDate = new Date(startDate);
-            // sDate.setDate(sDate.getDate() - 1);
-            let eDate = new Date(endDate);
-            eDate.setDate(eDate.getDate() + 1);
-           
-            let sekar= await this.taskAllocateRepository.find({ where: { curatorName: username, updatedDatetime: Between(sDate, eDate), status: "Submitted to QC" } });
-            return sekar;
+        let sDate = new Date(startDate);
+        // sDate.setDate(sDate.getDate() - 1);
+        let eDate = new Date(endDate);
+        eDate.setDate(eDate.getDate() + 1);
+
+        let sekar = await this.taskAllocateRepository.find({ where: { curatorName: username, updatedDatetime: Between(sDate, eDate), status: "Submitted to QC" } });
+        return sekar;
     }
 
     async findByStartEndDate(username: any, startDate: any, endDate: any): Promise<Taskallocation001wb[]> {
         // if (startDate != endDate) {
-            let sDate = new Date(startDate);
-            sDate.setDate(sDate.getDate() - 1);
-            let eDate = new Date(endDate);
-            eDate.setDate(eDate.getDate() + 1);
+        let sDate = new Date(startDate);
+        sDate.setDate(sDate.getDate() - 1);
+        let eDate = new Date(endDate);
+        eDate.setDate(eDate.getDate() + 1);
 
-            return await this.taskAllocateRepository.find({ where: { reviewerName: username, reviewerUpdatedDate: Between(sDate, eDate), reviewerStatus: "Completed" } });
+        return await this.taskAllocateRepository.find({ where: { reviewerName: username, reviewerUpdatedDate: Between(sDate, eDate), reviewerStatus: "Completed" } });
         // }
         // else {
         //     let sDate = new Date(startDate);

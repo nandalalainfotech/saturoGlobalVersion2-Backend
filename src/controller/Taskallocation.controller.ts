@@ -29,6 +29,12 @@ export class TaskAllocationController {
 		return this.taskallocationService.create(file, taskallocationDTO);
 	}
 
+	// @Post('uploadExcel')
+	// @UseInterceptors(FileInterceptor('file'))
+	// uploadMasterData(@UploadedFile() file: Express.Multer.File, @Body() taskallocationDTO: TaskallocationDTO) {
+	// 	return this.taskallocationService.uploadMasterData(file,taskallocationDTO);
+	// }
+
 	@UseGuards(JwtAuthGuard)
 	@Put("update")
 	update(@Body() taskallocationDTO: TaskallocationDTO): Promise<Taskallocation001wb> {
